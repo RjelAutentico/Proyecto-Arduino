@@ -145,21 +145,28 @@ cap1 = cv2.VideoCapture(1)
 
 
 lblVideoCam0 = Label(root)
-lblVideoCam0.grid(column=1, row=1, padx=(700,1), pady=(80,1))
+lblVideoCam0.place(x = 700, y = 80)
+
+#lblVideoCam0.grid(column=1, row=1, padx=(700,1), pady=(80,1))
+
 
 lblVideoCam1 = Label(root)
-lblVideoCam1.grid(column=2, row=1, padx=(10,1), pady=(80,1))
+lblVideoCam1.place(x = 960, y = 80)
+
+#lblVideoCam1.grid(column=2, row=1, padx=(10,1), pady=(80,1))
 
 
 
 
 btnIniciar0 = Button(root, text="Iniciar Camara 1", width=20,  bg='#5499C7', activebackground='#2980B9', command=comprobar0)
-btnIniciar0.grid(column=1, row=2, padx=(730,1), pady=20, ipady=(30))
+#btnIniciar0.place(x = 900, y = 200)
+btnIniciar0.grid(column=1, row=2, padx=(755,1), pady=(350,1), ipady=(30))
 
 
 
 btnIniciar1 = Button(root, text="Iniciar Camara 2", width=20,  bg='#5499C7', activebackground='#2980B9', command=comprobar1)
-btnIniciar1.grid(column=2, row=2, padx=(60,1), pady=20, ipady=(30))
+#btnIniciar1.place(x = 800, y = 200)
+btnIniciar1.grid(column=2, row=2, padx=(100,1), pady=(350,1), ipady=(30))
 
 
 lblLogo = Label(root)
