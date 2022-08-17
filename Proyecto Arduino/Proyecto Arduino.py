@@ -111,6 +111,15 @@ def visualizar1():
 	#		capgris.release()
 
 
+#--------------------------------------------------------------------------------------------------------#
+
+def envNum():
+	try:
+		numeroEst = int(numEstacion.get())
+		print(numeroEst)
+	except ValueError:
+		messagebox.showerror("","Ingrese un numero valido")
+
 
 #--------------------------------------------------------------------------------------------------------#
 
@@ -184,6 +193,24 @@ log0 = ImageTk.PhotoImage(image=log)
 
 lblLogo.configure(image=log0)
 lblLogo.image = log0 
+
+
+estacion = Label(root, text = "Respuesta Arduino: ", bg='#B8ABAB', fg = "white", font = ("Arial", 20))
+estacion.place(x = 40, y = 100)
+
+
+estacion = Label(root, text = "Liberar estación ", bg='#B8ABAB', fg = "white", font = ("Arial", 20))
+estacion.place(x = 40, y = 500)
+
+numEstacion = Entry(root, width=2, highlightthickness=1, font = ("Arial", 20))
+numEstacion.config(highlightbackground = "#B8ABAB", highlightcolor= "#B8ABAB")
+numEstacion.place(x = 250, y = 500)
+
+btnNumEstacion = Button(root, text = "ENVIAR", command = envNum)
+btnNumEstacion.place(x = 300, y = 505)
+
+
+
 
 
 root.mainloop()
