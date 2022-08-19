@@ -10,11 +10,21 @@ import imutils
 from tkinter.filedialog import askopenfilename
 import tkinter.simpledialog
 from tkinter import messagebox
-import serial,time
+import serial
+
 
 
 cont0 = 0
 cont1 = 0
+
+
+
+#--------------------------------------------------------------------------------------------------------#
+dato1 = 0
+
+serialArduino = serial.Serial("COM7",9600)
+#--------------------------------------------------------------------------------------------------------#
+
 
 def visualizar0():
 	global cont0
@@ -111,15 +121,52 @@ def visualizar1():
 	#		capgris.release()
 
 
-#--------------------------------------------------------------------------------------------------------#
-
 def envNum():
+
 	try:
 		numeroEst = int(numEstacion.get())
-		print(numeroEst)
-	except ValueError:
-		messagebox.showerror("","Ingrese un numero valido")
+		if numeroEst == 1 or numeroEst == 2 or numeroEst == 3 or numeroEst == 4 or numeroEst == 5 or numeroEst == 6:
+			print(numeroEst)
+		else:
+			messagebox.showerror("Ingrese un número valido","Las estaciones son de 1 a 6")
 
+	except ValueError:
+		messagebox.showerror("Ingrese un número valido","Las estaciones son de 1 a 6")
+
+
+
+def envPalEst():
+	try:	
+		numeroPal = NumeroPalet.get()
+		paletEstacion = int(palEst.get())
+		if numeroPal == "1" or numeroPal == "2" or numeroPal == "3" or numeroPal == "5" or numeroPal == "6":
+			if numeroPal == "1":
+				numeroPal = "UNO"
+			if numeroPal == "2":
+				numeroPal = "DOS"
+			if numeroPal == "3":
+				numeroPal = "TRES"
+			if numeroPal == "5":
+				numeroPal = "CINCO"
+			if numeroPal == "6":
+				numeroPal = "SEIS"
+
+			if paletEstacion == 1 or paletEstacion == 2 or paletEstacion == 3 or paletEstacion == 4 or paletEstacion == 5 or paletEstacion == 6:
+				print(numeroPal)
+				print(paletEstacion)
+			else:
+				messagebox.showerror("Ingrese valores validos.","Los palet son del 1 al 6, sin 4. Y las estaciones son de 1 a 6")
+		
+		else:
+			messagebox.showerror("Ingrese valores validos.","Los palet son del 1 al 6, sin 4. Y las estaciones son de 1 a 6")
+
+	
+	except ValueError:
+		messagebox.showerror("Ingrese valores validos.","Los palet son del 1 al 6, sin 4. Y las estaciones son de 1 a 6")
+
+
+def libAll():
+	return
 
 #--------------------------------------------------------------------------------------------------------#
 
@@ -204,10 +251,33 @@ estacion.place(x = 40, y = 500)
 
 numEstacion = Entry(root, width=2, highlightthickness=1, font = ("Arial", 20))
 numEstacion.config(highlightbackground = "#B8ABAB", highlightcolor= "#B8ABAB")
-numEstacion.place(x = 250, y = 500)
+numEstacion.place(x = 240, y = 500)
 
 btnNumEstacion = Button(root, text = "ENVIAR", command = envNum)
 btnNumEstacion.place(x = 300, y = 505)
+
+
+#------------------------------------------------------------------------------------------------------------------#
+EnviarPalet = Label(root, text = "Comprobar si el Palet ", bg='#B8ABAB', fg = "white", font = ("Arial", 20))
+EnviarPalet.place(x = 40, y = 550)
+
+NumeroPalet = Entry(root, width=2, highlightthickness=1, font = ("Arial", 20))
+NumeroPalet.config(highlightbackground = "#B8ABAB", highlightcolor= "#B8ABAB")
+NumeroPalet.place(x = 314, y = 550)
+
+aEstacion = Label(root, text = " Esta el la Estación ", bg='#B8ABAB', fg = "white", font = ("Arial", 20))
+aEstacion.place(x = 348, y = 550)
+
+palEst = Entry(root, width=2, highlightthickness=1, font = ("Arial", 20))
+palEst.config(highlightbackground = "#B8ABAB", highlightcolor= "#B8ABAB")
+palEst.place(x = 589, y = 550)
+
+btnPalEst = Button(root, text = "ENVIAR", command = envPalEst)
+btnPalEst.place(x = 649, y = 555)
+#------------------------------------------------------------------------------------------------------------------#
+
+btnLibAll = Button(root, text = "Liberar todas las estaciones",  width=30, height=2, activebackground='#7D7D7D', font = ("Arial", 15), command = libAll)
+btnLibAll.place(x = 40, y = 600)
 
 
 
