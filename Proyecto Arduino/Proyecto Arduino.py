@@ -11,6 +11,8 @@ from tkinter.filedialog import askopenfilename
 import tkinter.simpledialog
 from tkinter import messagebox
 import serial
+import time
+from tkinter import ttk
 
 
 
@@ -20,9 +22,13 @@ cont1 = 0
 
 
 #--------------------------------------------------------------------------------------------------------#
-dato1 = 0
+dato1 = ""
 
-serialArduino = serial.Serial("COM7",9600)
+archivo = open('C:\\Users\\Asus\\Desktop\\Proyecto Arduino\\Assets\\datos.txt','w')
+
+i = 0
+
+#serialArduino = serial.Serial("COM7",9600)
 #--------------------------------------------------------------------------------------------------------#
 
 
@@ -126,7 +132,11 @@ def envNum():
 	try:
 		numeroEst = int(numEstacion.get())
 		if numeroEst == 1 or numeroEst == 2 or numeroEst == 3 or numeroEst == 4 or numeroEst == 5 or numeroEst == 6:
+			numeroEst = str(numeroEst)
 			print(numeroEst)
+			dato1 = 'LIBERARE' + numeroEst
+			serialArduino.write(dato1.decode('ascii'))
+
 		else:
 			messagebox.showerror("Ingrese un número valido","Las estaciones son de 1 a 6")
 
@@ -152,8 +162,13 @@ def envPalEst():
 				numeroPal = "SEIS"
 
 			if paletEstacion == 1 or paletEstacion == 2 or paletEstacion == 3 or paletEstacion == 4 or paletEstacion == 5 or paletEstacion == 6:
+				paletEstacion = str(paletEstacion)
 				print(numeroPal)
 				print(paletEstacion)
+				dato1 = numeroPal + 'E' + paletEstacion
+				serialArduino.write(dato1.decode('ascii'))
+
+
 			else:
 				messagebox.showerror("Ingrese valores validos.","Los palet son del 1 al 6, sin 4. Y las estaciones son de 1 a 6")
 		
@@ -166,7 +181,9 @@ def envPalEst():
 
 
 def libAll():
-	return
+	dato1 = 'LIBERARTODO'
+	serialArduino.write(dato1.decode('ascii'))
+
 
 #--------------------------------------------------------------------------------------------------------#
 
@@ -191,7 +208,11 @@ def comprobar1():
 root = Tk()
 root.state('zoomed')
 root.title('Interfaz Arduino')
-root.iconbitmap('C:\\Users\\Lab CIM\\Desktop\\Proyecto Arduino\\Assets\\Logo_Arduino.ico')
+#root.iconbitmap('C:\\Users\\Lab CIM\\Desktop\\Proyecto Arduino\\Assets\\Logo_Arduino.ico')
+root.iconbitmap('C:\\Users\\Asus\\Desktop\\Proyecto Arduino\\Assets\\Logo_Arduino.ico')
+root.geometry("1400x800")
+
+
 
 lblTitulo = Label(root, text = "Interfaz Arduino", bg='#134A8D', fg = "white", font = ("Arial", 25))
 lblTitulo.place(x = 570, y = 20)
@@ -231,7 +252,9 @@ lblLogo.place(x = 1200, y = 500)
 
 #lblLogo.grid(column=3, row = 3, padx=(1,1), pady=(12,1))
 
-logo = cv2.imread('C:\\Users\\Lab CIM\\Desktop\\Proyecto Arduino\\Assets\\LogoUbb.png')
+#logo = cv2.imread('C:\\Users\\Lab CIM\\Desktop\\Proyecto Arduino\\Assets\\LogoUbb.png')
+logo = cv2.imread('C:\\Users\\Asus\\Desktop\\Proyecto Arduino\\Assets\\LogoUbb.png')
+
 logo = cv2.resize(logo, (150,200))
 logo = cv2.cvtColor(logo, cv2.COLOR_BGR2RGB)
 
@@ -243,7 +266,7 @@ lblLogo.image = log0
 
 
 estacion = Label(root, text = "Respuesta Arduino: ", bg='#B8ABAB', fg = "white", font = ("Arial", 20))
-estacion.place(x = 40, y = 100)
+estacion.place(x = 40, y = 10)
 
 
 estacion = Label(root, text = "Liberar estación ", bg='#B8ABAB', fg = "white", font = ("Arial", 20))
@@ -251,10 +274,10 @@ estacion.place(x = 40, y = 500)
 
 numEstacion = Entry(root, width=2, highlightthickness=1, font = ("Arial", 20))
 numEstacion.config(highlightbackground = "#B8ABAB", highlightcolor= "#B8ABAB")
-numEstacion.place(x = 240, y = 500)
+numEstacion.place(x = 280, y = 500)
 
 btnNumEstacion = Button(root, text = "ENVIAR", command = envNum)
-btnNumEstacion.place(x = 300, y = 505)
+btnNumEstacion.place(x = 340, y = 505)
 
 
 #------------------------------------------------------------------------------------------------------------------#
@@ -263,25 +286,61 @@ EnviarPalet.place(x = 40, y = 550)
 
 NumeroPalet = Entry(root, width=2, highlightthickness=1, font = ("Arial", 20))
 NumeroPalet.config(highlightbackground = "#B8ABAB", highlightcolor= "#B8ABAB")
-NumeroPalet.place(x = 314, y = 550)
+NumeroPalet.place(x = 354, y = 550)
 
 aEstacion = Label(root, text = " Esta el la Estación ", bg='#B8ABAB', fg = "white", font = ("Arial", 20))
-aEstacion.place(x = 348, y = 550)
+aEstacion.place(x = 390, y = 550)
 
 palEst = Entry(root, width=2, highlightthickness=1, font = ("Arial", 20))
 palEst.config(highlightbackground = "#B8ABAB", highlightcolor= "#B8ABAB")
-palEst.place(x = 589, y = 550)
+palEst.place(x = 669, y = 550)
 
 btnPalEst = Button(root, text = "ENVIAR", command = envPalEst)
-btnPalEst.place(x = 649, y = 555)
+btnPalEst.place(x = 730, y = 555)
 #------------------------------------------------------------------------------------------------------------------#
 
 btnLibAll = Button(root, text = "Liberar todas las estaciones",  width=30, height=2, activebackground='#7D7D7D', font = ("Arial", 15), command = libAll)
 btnLibAll.place(x = 40, y = 600)
 
 
+#------------------------------------------------------------------------------------------------------------------#
+	
+"""
+while True:
+	cad = serialArduino.readline().decode('ascii')
+	archivo.write(cad)
+
+"""
+leer = archivo.read()
 
 
+
+texto = LabelFrame(root)
+
+scrollbar = tk.Scrollbar(texto)
+mycanvas = Canvas(texto, background = "white", yscrollcommand=scrollbar.set)
+
+scrollbar.config(command=mycanvas.yview)
+scrollbar.pack(side = RIGHT, fill="y")
+myframe = Frame(mycanvas)
+
+mycanvas.pack(side=LEFT, fill="both", expand="yes")
+
+mycanvas.create_window(0,0, window=myframe, anchor='nw')
+
+#yscrollbar = ttk.Scrollbar(texto, orient = "vertical", command = mycanvas.yview)
+datosArd = Label(myframe, text = leer, background = "white")
+
+#mycanvas.bind('<configure>', lambda e: mycanvas.configure(scrollregion = mycanvas.bbox('all')))
+
+
+
+
+texto.place(x = 40, y = 60)
+
+
+
+#------------------------------------------------------------------------------------------------------------------#
 
 root.mainloop()
 
