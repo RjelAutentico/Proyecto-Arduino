@@ -18,17 +18,18 @@ from tkinter import ttk
 
 cont0 = 0
 cont1 = 0
-
+cont2 = 0
 
 
 #--------------------------------------------------------------------------------------------------------#
 dato1 = ""
-
-archivo = open('C:\\Users\\Asus\\Desktop\\Proyecto Arduino\\Assets\\datos.txt','w')
+cad2 = ""
+#archivo = open('C:\\Users\\Asus\\Desktop\\Proyecto Arduino\\Assets\\datos.txt','w')
+#archivo = open('C:\\Users\\Lab CIM\\Desktop\\Proyecto Arduino\\Assets\\datos.txt','w')
 
 i = 0
 
-#serialArduino = serial.Serial("COM7",9600)
+serialArduino = serial.Serial("COM4",9600)
 #--------------------------------------------------------------------------------------------------------#
 
 
@@ -46,7 +47,7 @@ def visualizar0():
 
 
 			frame0 = imutils.resize(frame, width=350)
-			frame0 = cv2.resize(frame0, (250,250))
+			frame0 = cv2.resize(frame0, (400,300))
 			frame0 = cv2.cvtColor(frame0, cv2.COLOR_BGR2RGB)
 
 
@@ -93,7 +94,7 @@ def visualizar1():
 		if ret1 == True:
 
 			frame1 = imutils.resize(frame1, width=350)
-			frame1 = cv2.resize(frame1, (250,250))
+			frame1 = cv2.resize(frame1, (400,300))
 			frame1 = cv2.cvtColor(frame1, cv2.COLOR_BGR2RGB)
 
 
@@ -135,7 +136,9 @@ def envNum():
 			numeroEst = str(numeroEst)
 			print(numeroEst)
 			dato1 = 'LIBERARE' + numeroEst
-			serialArduino.write(dato1.decode('ascii'))
+			serialArduino.write(dato1.encode('ascii'))
+			#serialArduino.write(dato1)
+
 
 		else:
 			messagebox.showerror("Ingrese un número valido","Las estaciones son de 1 a 6")
@@ -166,7 +169,9 @@ def envPalEst():
 				print(numeroPal)
 				print(paletEstacion)
 				dato1 = numeroPal + 'E' + paletEstacion
-				serialArduino.write(dato1.decode('ascii'))
+				serialArduino.write(dato1.encode('ascii'))
+				#serialArduino.write(dato1)
+
 
 
 			else:
@@ -182,7 +187,9 @@ def envPalEst():
 
 def libAll():
 	dato1 = 'LIBERARTODO'
-	serialArduino.write(dato1.decode('ascii'))
+	print(dato1)
+	serialArduino.write(dato1.encode('ascii'))
+	#serialArduino.write(dato1)
 
 
 #--------------------------------------------------------------------------------------------------------#
@@ -208,13 +215,13 @@ def comprobar1():
 root = Tk()
 root.state('zoomed')
 root.title('Interfaz Arduino')
-#root.iconbitmap('C:\\Users\\Lab CIM\\Desktop\\Proyecto Arduino\\Assets\\Logo_Arduino.ico')
-root.iconbitmap('C:\\Users\\Asus\\Desktop\\Proyecto Arduino\\Assets\\Logo_Arduino.ico')
+root.iconbitmap('C:\\Users\\Lab CIM\\Desktop\\Proyecto Arduino\\Assets\\Logo_Arduino.ico')
+#root.iconbitmap('C:\\Users\\Asus\\Desktop\\Proyecto Arduino\\Assets\\Logo_Arduino.ico')
 root.geometry("1400x800")
 
 
 
-lblTitulo = Label(root, text = "Interfaz Arduino", bg='#134A8D', fg = "white", font = ("Arial", 25))
+lblTitulo = Label(root, text = "Interfaz Grafica", bg='#134A8D', fg = "white", font = ("Arial", 25))
 lblTitulo.place(x = 570, y = 20)
 
 cap0 = cv2.VideoCapture(0)
@@ -222,40 +229,40 @@ cap1 = cv2.VideoCapture(1)
 
 
 lblVideoCam0 = Label(root)
-lblVideoCam0.place(x = 700, y = 80)
+lblVideoCam0.place(x = 900, y = 20)
 
 #lblVideoCam0.grid(column=1, row=1, padx=(700,1), pady=(80,1))
 
 
 lblVideoCam1 = Label(root)
-lblVideoCam1.place(x = 960, y = 80)
+lblVideoCam1.place(x = 900, y = 330)
 
 #lblVideoCam1.grid(column=2, row=1, padx=(10,1), pady=(80,1))
 
 
 
 
-btnIniciar0 = Button(root, text="Iniciar Camara 1", width=20,  bg='#5499C7', activebackground='#2980B9', command=comprobar0)
-#btnIniciar0.place(x = 900, y = 200)
-btnIniciar0.grid(column=1, row=2, padx=(755,1), pady=(350,1), ipady=(30))
+btnIniciar0 = Button(root, text="Iniciar Camara 1", width=20, height=3, bg='#5499C7', activebackground='#2980B9', command=comprobar0)
+btnIniciar0.place(x = 730, y = 300)
+#btnIniciar0.grid(column=1, row=2, padx=(755,1), pady=(350,1), ipady=(30))
 
 
 
-btnIniciar1 = Button(root, text="Iniciar Camara 2", width=20,  bg='#5499C7', activebackground='#2980B9', command=comprobar1)
-#btnIniciar1.place(x = 800, y = 200)
-btnIniciar1.grid(column=2, row=2, padx=(100,1), pady=(350,1), ipady=(30))
+btnIniciar1 = Button(root, text="Iniciar Camara 2", width=20, height=3, bg='#5499C7', activebackground='#2980B9', command=comprobar1)
+btnIniciar1.place(x = 730, y = 370)
+#btnIniciar1.grid(column=1, row=3, padx=(100,1), pady=(350,1), ipady=(30))
 
 
 lblLogo = Label(root)
 
-lblLogo.place(x = 1200, y = 500)
+lblLogo.place(x = 550, y = 100)
 
 #lblLogo.grid(column=3, row = 3, padx=(1,1), pady=(12,1))
 
-#logo = cv2.imread('C:\\Users\\Lab CIM\\Desktop\\Proyecto Arduino\\Assets\\LogoUbb.png')
-logo = cv2.imread('C:\\Users\\Asus\\Desktop\\Proyecto Arduino\\Assets\\LogoUbb.png')
+logo = cv2.imread('C:\\Users\\Lab CIM\\Desktop\\Proyecto Arduino\\Assets\\LogoUbb.png')
+#logo = cv2.imread('C:\\Users\\Asus\\Desktop\\Proyecto Arduino\\Assets\\LogoUbb.png')
 
-logo = cv2.resize(logo, (150,200))
+logo = cv2.resize(logo, (100,150))
 logo = cv2.cvtColor(logo, cv2.COLOR_BGR2RGB)
 
 log = Image.fromarray(logo)
@@ -304,17 +311,57 @@ btnLibAll.place(x = 40, y = 600)
 
 
 #------------------------------------------------------------------------------------------------------------------#
-	
-"""
-while True:
+
+def datosArduino2(cadDos):
+	global cad2
+	cad2 = cadDos
+	datosArd2.configure(text = cad2, fg = "black", font = ("Arial", 10))
+
+
+def datosArduino1():
+	global cont2
+
+	cont2 = cont2 + 1
+	#time.sleep(60)
 	cad = serialArduino.readline().decode('ascii')
-	archivo.write(cad)
+	print(cad)
+	if cad == cad2:
+		datosArduino2(cad)
+	else:
+		datosArd.configure(text = cad, fg = "black", font = ("Arial", 10))
+	datosArd.after(250, datosArduino1)
+	#archivo.write(cad)
+
+
+
+def comprobar2():
+	if cont2 == 0:
+		datosArduino1()
+	else:
+		return
+
+#leer = archivo.read()
+
+
+
+btnDatosArd = Button(root, text = "Activar respuestas de Arduino", command = comprobar2)
+btnDatosArd.place(x = 450, y = 300)
+
+
+datosArd = Label(root)
+datosArd.place(x = 40, y = 110)
+
+datosArd2 = Label(root)
+datosArd2.place(x = 40, y = 60)
+
+
+lblcredito = Label(root, text = "Interfaz Grafica creada por Rodrigo Jara Riveros", bg='#BFBFBF', fg = "black", font = ("Arial", 15))
+lblcredito.place(x=450, y=600)
+
+lblYo = Label(root, text = "Estudiante de ICINF, UBB", bg='#BFBFBF', fg = "black", font = ("Arial", 15))
+lblYo.place(x=450, y=629)
 
 """
-leer = archivo.read()
-
-
-
 texto = LabelFrame(root)
 
 scrollbar = tk.Scrollbar(texto)
@@ -328,17 +375,10 @@ mycanvas.pack(side=LEFT, fill="both", expand="yes")
 
 mycanvas.create_window(0,0, window=myframe, anchor='nw')
 
-#yscrollbar = ttk.Scrollbar(texto, orient = "vertical", command = mycanvas.yview)
-datosArd = Label(myframe, text = leer, background = "white")
-
-#mycanvas.bind('<configure>', lambda e: mycanvas.configure(scrollregion = mycanvas.bbox('all')))
-
-
-
 
 texto.place(x = 40, y = 60)
 
-
+"""
 
 #------------------------------------------------------------------------------------------------------------------#
 
