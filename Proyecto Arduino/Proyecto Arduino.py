@@ -13,7 +13,9 @@ from tkinter import messagebox
 import serial
 import time
 from tkinter import ttk
-
+import sys
+import subprocess
+import threading 
 
 
 cont0 = 0
@@ -134,7 +136,7 @@ def envNum():
 		numeroEst = int(numEstacion.get())
 		if numeroEst == 1 or numeroEst == 2 or numeroEst == 3 or numeroEst == 4 or numeroEst == 5 or numeroEst == 6:
 			numeroEst = str(numeroEst)
-			print(numeroEst)
+			#print(numeroEst)
 			dato1 = 'LIBERARE' + numeroEst
 			serialArduino.write(dato1.encode('ascii'))
 			#serialArduino.write(dato1)
@@ -166,8 +168,8 @@ def envPalEst():
 
 			if paletEstacion == 1 or paletEstacion == 2 or paletEstacion == 3 or paletEstacion == 4 or paletEstacion == 5 or paletEstacion == 6:
 				paletEstacion = str(paletEstacion)
-				print(numeroPal)
-				print(paletEstacion)
+				#print(numeroPal)
+				#print(paletEstacion)
 				dato1 = numeroPal + 'E' + paletEstacion
 				serialArduino.write(dato1.encode('ascii'))
 				#serialArduino.write(dato1)
@@ -187,7 +189,7 @@ def envPalEst():
 
 def libAll():
 	dato1 = 'LIBERARTODO'
-	print(dato1)
+	#print(dato1)
 	serialArduino.write(dato1.encode('ascii'))
 	#serialArduino.write(dato1)
 
@@ -224,7 +226,7 @@ root.geometry("1400x800")
 lblTitulo = Label(root, text = "Interfaz Grafica", bg='#134A8D', fg = "white", font = ("Arial", 25))
 lblTitulo.place(x = 570, y = 20)
 
-cap0 = cv2.VideoCapture(0)
+cap0 = cv2.VideoCapture(2)
 cap1 = cv2.VideoCapture(1)
 
 
@@ -328,6 +330,7 @@ def datosArduino1():
 	if cad == cad2:
 		datosArduino2(cad)
 	else:
+		#return
 		datosArd.configure(text = cad, fg = "black", font = ("Arial", 10))
 	datosArd.after(250, datosArduino1)
 	#archivo.write(cad)
@@ -345,7 +348,7 @@ def comprobar2():
 
 
 btnDatosArd = Button(root, text = "Activar respuestas de Arduino", command = comprobar2)
-btnDatosArd.place(x = 450, y = 300)
+btnDatosArd.place(x = 305, y = 420)
 
 
 datosArd = Label(root)
@@ -361,26 +364,41 @@ lblcredito.place(x=450, y=600)
 lblYo = Label(root, text = "Estudiante de ICINF, UBB", bg='#BFBFBF', fg = "black", font = ("Arial", 15))
 lblYo.place(x=450, y=629)
 
-"""
-texto = LabelFrame(root)
 
-scrollbar = tk.Scrollbar(texto)
-mycanvas = Canvas(texto, background = "white", yscrollcommand=scrollbar.set)
-
-scrollbar.config(command=mycanvas.yview)
-scrollbar.pack(side = RIGHT, fill="y")
-myframe = Frame(mycanvas)
-
-mycanvas.pack(side=LEFT, fill="both", expand="yes")
-
-mycanvas.create_window(0,0, window=myframe, anchor='nw')
-
-
-texto.place(x = 40, y = 60)
-
-"""
 
 #------------------------------------------------------------------------------------------------------------------#
+
+
+class Redirect():
+
+    def __init__(self, widget, autoscroll=True):
+        self.widget = widget
+        self.autoscroll = autoscroll
+
+    def write(self, textTer):
+        self.widget.insert('end', textTer)
+        if self.autoscroll:
+            self.widget.see("end")  # autoscroll
+
+
+
+frameTer = tk.Frame(root)
+frameTer.place(x=40, y =50)
+
+textTer = tk.Text(frameTer, width = 30, height=25)
+textTer.pack(side='left', fill='both', expand=True)
+
+scrollbar = tk.Scrollbar(frameTer)
+scrollbar.pack(side='right', fill='y')
+
+textTer['yscrollcommand'] = scrollbar.set
+scrollbar['command'] = textTer.yview
+
+old_stdout = sys.stdout    
+sys.stdout = Redirect(textTer)
+
+
+
 
 root.mainloop()
 
